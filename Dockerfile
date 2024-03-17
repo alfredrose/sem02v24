@@ -9,7 +9,15 @@ RUN apt-get update \
     nano \
     wget \
     curl \
-    git
+    git  \
+    build-essential \
+    gcc \
+    openjdk-21-jdk \
+    mono-complete \
+    python3 \
+    strace \
+    valgrind
+
 
 RUN useradd -G sudo -m -d /home/omer -s /bin/bash -p "$(openssl passwd -1 Omer.sen310322)" omer
 
@@ -39,3 +47,8 @@ RUN mkdir -p $HOME/go/{src,bin}
 
 ENV GOPATH="/home/omer/go"
 ENV PATH="${PATH}:${GOPATH}/bin:/usr/local/go/bin"
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf \
+    | sh -s -- -y
+ENV PATH="${PATH}:${HOME}/.cargo/bin"
